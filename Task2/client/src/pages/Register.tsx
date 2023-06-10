@@ -1,59 +1,22 @@
 
-import type { CascaderProps } from 'antd';
 import {
  
   Button,
 
   Form,
   Input,
- 
- 
   Select,
+  message,
 } from 'antd';
-import { useState } from 'react';
 
-const { Option } = Select;
+import api from '../utils/api';
+import { useNavigate } from 'react-router-dom';
 
-interface DataNodeType {
-  value: string;
-  label: string;
-  children?: DataNodeType[];
-}
 
-const residences: CascaderProps<DataNodeType>['options'] = [
-  {
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [
-      {
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        children: [
-          {
-            value: 'xihu',
-            label: 'West Lake',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    children: [
-      {
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [
-          {
-            value: 'zhonghuamen',
-            label: 'Zhong Hua Men',
-          },
-        ],
-      },
-    ],
-  },
-];
+
+
+
+
 
 const formItemLayout = {
   labelCol: {
@@ -81,58 +44,44 @@ const tailFormItemLayout = {
 
 const Register = () => {
    const [form] = Form.useForm();
-
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
-  };
-
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>
-    </Form.Item>
-  );
-
-  const suffixSelector = (
-    <Form.Item name="suffix" noStyle>
-      <Select style={{ width: 70 }}>
-        <Option value="USD">$</Option>
-        <Option value="CNY">¥</Option>
-      </Select>
-    </Form.Item>
-  );
-
-  const [autoCompleteResult, setAutoCompleteResult] = useState<string[]>([]);
-
-  const onWebsiteChange = (value: string) => {
-    if (!value) {
-      setAutoCompleteResult([]);
-    } else {
-      setAutoCompleteResult(['.com', '.org', '.net'].map((domain) => `${value}${domain}`));
+const navigate=useNavigate()
+  const onFinish = async (values: any) => {
+   
+    try {
+      const savedUser = await api.post('/auth/register', values)
+      
+      if (savedUser) {
+        navigate("/login")
+      }
+      
+    } catch (err: any) {
+      if (err.response.status === 409) {
+        message.error("User Already Registered")
+      } else {
+        message.error("Error registering user :Try again!")
+      }
     }
   };
 
-  const websiteOptions = autoCompleteResult.map((website) => ({
-    label: website,
-    value: website,
-  }));
+
+
+
 
   return (
     <div className='register'>
+      <div className='register-form'>
     <div className='register-heading'>
       <h2> Register</h2>
     </div>
-    <div className='register-form'>
+    <div >
 
     <Form
       {...formItemLayout}
       form={form}
       name="register"
       onFinish={onFinish}
-      initialValues={{ residence: ['zhejiang', 'hangzhou', 'xihu'], prefix: '86' }}
-      style={{ maxWidth: 700 }}
+      initialValues={{ prefix: '86' }}
+      style={{ maxWidth: 500 }}
       scrollToFirstError
     >
       <Form.Item
@@ -170,7 +119,8 @@ const Register = () => {
         name="confirm"
         label="Confirm Password"
         dependencies={['password']}
-        hasFeedback
+            hasFeedback
+            
         rules={[
           {
             required: true,
@@ -184,19 +134,27 @@ const Register = () => {
               return Promise.reject(new Error('The two passwords that you entered do not match!'));
             },
           }),
-        ]}
+            ]}
+            
       >
         <Input.Password />
       </Form.Item>
 
-      
+      <Form.Item name="role" label="Roles">
+        <Select>
+              <Select.Option value="admin" >Admin</Select.Option>
+              <Select.Option value="developer" >Developer</Select.Option>
+              
+        </Select>
+      </Form.Item>
       <Form.Item {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" style={{width:"250px"} }>
           Register
         </Button>
       </Form.Item>
       </Form>
-      </div>
+        </div>
+        </div>
       </div>
   )
 }

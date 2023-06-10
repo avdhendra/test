@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "src/utils/appwrite.config.ts", "../testNode2/src/services/firebaseUtils.ts"  ]
 }

@@ -20,7 +20,7 @@
   },
   "include": [
         "src/**/*.ts" //which kind of files to compile
-    ],
+, "../client/src/utils/appwrite.config.ts"    ],
     "exclude": [
         "node_modules" //which files or directories to ignore
     ]

@@ -9,17 +9,23 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const User_1 = __importDefault(require("../models/User"));
 const register = async (req, res) => {
     try {
-        const { firstName, lastName, email, password, } = req.body;
-        const salt = await bcrypt_1.default.genSalt();
-        const passwordHash = await bcrypt_1.default.hash(password, salt);
-        const newUser = new User_1.default({
-            firstName,
-            lastName,
-            email,
-            password: passwordHash,
-        });
-        const savedUser = await newUser.save();
-        res.status(201).json(savedUser);
+        const { email, password, confirm, role } = req.body;
+        const user = await User_1.default.find({ email: email });
+        if (user) {
+            res.status(409).json({ msg: "User Already Registered" });
+        }
+        else {
+            const salt = await bcrypt_1.default.genSalt();
+            const passwordHash = await bcrypt_1.default.hash(password.toString(), salt.toString());
+            const newUser = new User_1.default({
+                email,
+                confirmPassword: confirm,
+                role,
+                password: passwordHash,
+            });
+            const savedUser = await newUser.save();
+            res.status(201).json(savedUser);
+        }
     }
     catch (err) {
         res.status(500).json({ error: err.message });
@@ -33,7 +39,7 @@ const login = async (req, res) => {
         if (!user) {
             return res.status(404).json({ msg: 'User Does not exist' });
         }
-        const isMatch = await bcrypt_1.default.compare(password, user.password);
+        const isMatch = await bcrypt_1.default.compare(password.toString(), user.password.toString());
         if (!isMatch) {
             return res.status(400).json({ msg: 'Invalid Credentials' });
         }

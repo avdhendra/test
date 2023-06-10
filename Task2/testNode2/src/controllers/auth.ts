@@ -2,26 +2,33 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
 
-export const register = async (req:any, res:any) => {
+export const register = async (req: any, res: any) => {
+    
   try {
     const {
-      firstName,
-      lastName,
       email,
       password,
-     
+        confirm,
+      role
       } = req.body;
+
+    const user=await User.find({email:email})
+    if (user.length>0) {
+      res.status(409).json({msg:"User Already Registered"})
+    } else {
+      
       const salt = await bcrypt.genSalt()
-      const passwordHash = await bcrypt.hash(password, salt);
+      const passwordHash = await bcrypt.hash(password.toString(), salt.toString());
       const newUser = new User({
-        firstName,
-        lastName,
         email,
+        confirmPassword:passwordHash,
+        role,
         password:passwordHash,
        
       });
       const savedUser = await newUser.save();
       res.status(201).json(savedUser)
+    }
   } catch (err:any) {
       res.status(500).json({error:err.message})
   }
@@ -40,7 +47,7 @@ export const login = async (req:any, res: any): Promise<void> => {
             return res.status(404).json({ msg: 'User Does not exist' });
         }
         
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password.toString(), user.password.toString());
         
         if (!isMatch) {
             return res.status(400).json({ msg: 'Invalid Credentials' });

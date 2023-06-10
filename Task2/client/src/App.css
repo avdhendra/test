@@ -1,3 +1,15 @@
+@import '../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-lists/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-grids/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-react-spreadsheet/styles/material.css';
+
+
 #components-layout-demo-side .logo {
   height: 32px;
   margin: 16px;
@@ -94,7 +106,7 @@
 }
 
 #components-form-demo-normal-login .login-form {
-  max-width: 300px;
+  max-width: 800px;
 }
 #components-form-demo-normal-login .login-form-forgot {
   float: right;
@@ -103,7 +115,7 @@
   float: left;
 }
 #components-form-demo-normal-login .login-form-button {
-  width: 100%;
+  width: 300px;
 }
 
 .register{
@@ -118,8 +130,60 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  max-width: 700px;
+  
   
 
 
+}
+.login-form-2{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+width: 500px;
+  padding: 20px;
+  border: #010101 1px solid;
+  margin-top: 20px;
+box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+border-radius: 10px;
+}
+
+h2{
+  text-align: center;
+}
+
+.register-form{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+
+  border: #010101 1px solid;
+  margin-top: 20px;
+width: 600px;
+box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+border-radius: 10px;
+}
+
+.button-align{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
+.sign-out{
+  display: flex;
+  align-items: end;
+ 
+  flex-direction: column;
+  margin: 10px;
+}
+
+.display-card{
+  display: flex;
+  flex-direction: row;
+  gap:20px;
+  margin-top:10px;
 }
