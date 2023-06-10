@@ -5,9 +5,7 @@ const cors=require('cors') //for allowing cross origin requests for different ur
 const port = process.env.PORT || 3000;
 
 // Middleware to parse JSON
-app.use(cors({
-    origin: 'http://localhost:3000' //with this origin we can make the cross origin request to localhost:3000
-}))
+app.use(cors())
 app.use(express.json());
 
 // Start the server
